@@ -11,7 +11,6 @@ public class Player_Movement : MonoBehaviour
     private float playerInputV;
 
     public float movementSpeed;
-    public float test;
 
     // Use this for initialization
     void Start()
@@ -26,5 +25,7 @@ public class Player_Movement : MonoBehaviour
         playerInputH = Input.GetAxis("Horizontal");
         playerInputV = Input.GetAxis("Vertical");
         player_RB.velocity = new Vector3(movementSpeed * playerInputH, 0, movementSpeed * playerInputV);
+
     }
+
 }
