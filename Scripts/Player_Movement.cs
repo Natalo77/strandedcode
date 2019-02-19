@@ -25,7 +25,22 @@ public class Player_Movement : MonoBehaviour
         playerInputH = Input.GetAxis("Horizontal");
         playerInputV = Input.GetAxis("Vertical");
         player_RB.velocity = new Vector3(movementSpeed * playerInputH, 0, movementSpeed * playerInputV);
+    }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Ship" || other.gameObject.tag == "Building")
+        {
+            other.GetComponent<MeshRenderer>().enabled = false;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Ship" || other.gameObject.tag == "Building")
+        {
+            other.GetComponent<MeshRenderer>().enabled = true;
+        }
     }
 
 }
