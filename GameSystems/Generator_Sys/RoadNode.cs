@@ -34,6 +34,8 @@ public class RoadNode{
     private EndType endBottom;
     private Vector2 location;
 
+    private int angle;
+
     /**
      * Creates a RoadNode with the specified information.
      */
@@ -45,6 +47,17 @@ public class RoadNode{
         endTop = top;
         endBottom = bottom;
         this.location = location;
+
+        if(this.up)
+        {
+            this.angle = 0;
+        }
+        else
+        {
+            this.angle = 90;
+        }
+
+        GameObject.Instantiate(GameStateController.Instance.GetComponent<BuildingPrefabWrapper>().road, new Vector3(location.x * 2.5f, 0.0f, location.y * 2.5f), Quaternion.Euler(new Vector3(0, angle, 0)), null);
     }
 
     public bool getUp()
