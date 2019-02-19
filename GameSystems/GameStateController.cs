@@ -1,17 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameStateController : Singleton<GameStateController> {
 
 
+    private int x = 1;
 
 	// Use this for initialization
 	void Start () {
-
+		
 	}
 
+
+	
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.G))
@@ -51,6 +53,6 @@ public class GameStateController : Singleton<GameStateController> {
 
     public void TESTFUNCTION_dropPlayer()
     {
-        GameObject.Instantiate(GetComponent<BuildingPrefabWrapper>().player, new Vector3(25, 5, 0), Quaternion.Euler(0,0,0));
+        GameObject.Instantiate(GetComponent<BuildingPrefabWrapper>().player, new Vector3(25, 5, 0), Quaternion.Euler(0, 0, 0));
     }
 }
