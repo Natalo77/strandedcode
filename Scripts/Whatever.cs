@@ -14,9 +14,10 @@ public class Whatever : MonoBehaviour {
 	void Update () {
 		for (int x = 0; x < 10; x++)
         {
-            Debug.Log(x + "1");
+            Debug.Log(x + "2");
             Debug.Log("1");
 
+            Debug.Log("2");
         }
 	}
 }
