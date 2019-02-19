@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Movement : MonoBehaviour {
+public class Player_Movement : MonoBehaviour
+{
     Rigidbody player_RB;
     Animator player_Anim;
 
@@ -12,15 +13,18 @@ public class Player_Movement : MonoBehaviour {
     public float movementSpeed;
     public float test;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         player_RB = GetComponent<Rigidbody>();
         player_Anim = GetComponent<Animator>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         playerInputH = Input.GetAxis("Horizontal");
         playerInputV = Input.GetAxis("Vertical");
         player_RB.velocity = new Vector3(movementSpeed * playerInputH, 0, movementSpeed * playerInputV);
+    }
 }

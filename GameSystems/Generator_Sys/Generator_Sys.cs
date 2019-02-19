@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class Generator_Sys : MonoBehaviour {
+public class Generator_Sys : MonoBehaviour  {
 
     private RoadGraph<RoadNode> graph;
     private System.Random rand;
 
     //Creates the initial Scene point.
-    Generator_Sys()
+    public void Start()
     {
         rand = new System.Random();
         graph = new RoadGraph<RoadNode>();
@@ -115,7 +115,7 @@ public class Generator_Sys : MonoBehaviour {
                 graph.GetNode(new Vector2(1, -2)).getblockES(),
                 RoadNode.EndType.Four,
                 RoadNode.EndType.Four,
-                new Vector2(1, -1)
+                new Vector2(2, -1)
                 ));
 
         graph.add(
@@ -135,41 +135,64 @@ public class Generator_Sys : MonoBehaviour {
                 graph.GetNode(new Vector2(-1, 0)).getblockES(),
                 RoadNode.EndType.Four,
                 RoadNode.EndType.Four,
-                new Vector2(1, -2)
+                new Vector2(-2, 1)
                 ));
 
 
         //Edges.
         graph.add(graph.GetNode(new Vector2(0, 1)), graph.GetNode(new Vector2(1, 0)));
         graph.add(graph.GetNode(new Vector2(1, 0)), graph.GetNode(new Vector2(0, 1)));
+
         graph.add(graph.GetNode(new Vector2(1, 0)), graph.GetNode(new Vector2(0, -1)));
         graph.add(graph.GetNode(new Vector2(0, -1)), graph.GetNode(new Vector2(1, 0)));
+
         graph.add(graph.GetNode(new Vector2(0, -1)), graph.GetNode(new Vector2(-1, 0)));
         graph.add(graph.GetNode(new Vector2(-1, 0)), graph.GetNode(new Vector2(0, -1)));
+
         graph.add(graph.GetNode(new Vector2(-1, 0)), graph.GetNode(new Vector2(0, 1)));
         graph.add(graph.GetNode(new Vector2(0, 1)), graph.GetNode(new Vector2(-1, 0)));
+
+        //---
+
         graph.add(graph.GetNode(new Vector2(0, 1)), graph.GetNode(new Vector2(1, 2)));
         graph.add(graph.GetNode(new Vector2(1, 2)), graph.GetNode(new Vector2(0, 1)));
+
         graph.add(graph.GetNode(new Vector2(1, 2)), graph.GetNode(new Vector2(2, 1)));
         graph.add(graph.GetNode(new Vector2(2, 1)), graph.GetNode(new Vector2(1, 2)));
+
         graph.add(graph.GetNode(new Vector2(2, 1)), graph.GetNode(new Vector2(1, 0)));
         graph.add(graph.GetNode(new Vector2(1, 0)), graph.GetNode(new Vector2(2, 1)));
-        graph.add(graph.GetNode(new Vector2(1, 0)), graph.GetNode(new Vector2(1, -1)));
-        graph.add(graph.GetNode(new Vector2(1, -1)), graph.GetNode(new Vector2(1, 0)));
-        graph.add(graph.GetNode(new Vector2(1, -1)), graph.GetNode(new Vector2(-1, -2)));
-        graph.add(graph.GetNode(new Vector2(-1, -2)), graph.GetNode(new Vector2(1, -1)));
-        graph.add(graph.GetNode(new Vector2(-1, -2)), graph.GetNode(new Vector2(0, -1)));
+
+        //---
+
+        graph.add(graph.GetNode(new Vector2(1, 0)), graph.GetNode(new Vector2(2, -1)));
+        graph.add(graph.GetNode(new Vector2(2, -1)), graph.GetNode(new Vector2(1, 0)));
+
+        graph.add(graph.GetNode(new Vector2(2, -1)), graph.GetNode(new Vector2(1, -2)));
+        graph.add(graph.GetNode(new Vector2(1, -2)), graph.GetNode(new Vector2(2, -1)));
+
+        graph.add(graph.GetNode(new Vector2(1, -2)), graph.GetNode(new Vector2(0, -1)));
+        graph.add(graph.GetNode(new Vector2(0, -1)), graph.GetNode(new Vector2(1, -2)));
+
+        //---
+
         graph.add(graph.GetNode(new Vector2(0, -1)), graph.GetNode(new Vector2(-1, -2)));
-        graph.add(graph.GetNode(new Vector2(0, -1)), graph.GetNode(new Vector2(-1, -2)));
         graph.add(graph.GetNode(new Vector2(-1, -2)), graph.GetNode(new Vector2(0, -1)));
+
         graph.add(graph.GetNode(new Vector2(-1, -2)), graph.GetNode(new Vector2(-2, -1)));
         graph.add(graph.GetNode(new Vector2(-2, -1)), graph.GetNode(new Vector2(-1, -2)));
+
         graph.add(graph.GetNode(new Vector2(-2, -1)), graph.GetNode(new Vector2(-1, 0)));
         graph.add(graph.GetNode(new Vector2(-1, 0)), graph.GetNode(new Vector2(-2, -1)));
-        graph.add(graph.GetNode(new Vector2(-1, 0)), graph.GetNode(new Vector2(1, -2)));
-        graph.add(graph.GetNode(new Vector2(1, -2)), graph.GetNode(new Vector2(-1, 0)));
-        graph.add(graph.GetNode(new Vector2(1, -2)), graph.GetNode(new Vector2(-1, 2)));
-        graph.add(graph.GetNode(new Vector2(-1, 2)), graph.GetNode(new Vector2(1, -2)));
+
+        //---
+
+        graph.add(graph.GetNode(new Vector2(-1, 0)), graph.GetNode(new Vector2(-2, 1)));
+        graph.add(graph.GetNode(new Vector2(-2, 1)), graph.GetNode(new Vector2(-1, 0)));
+
+        graph.add(graph.GetNode(new Vector2(-2, 1)), graph.GetNode(new Vector2(-1, 2)));
+        graph.add(graph.GetNode(new Vector2(-1, 2)), graph.GetNode(new Vector2(-2, 1)));
+
         graph.add(graph.GetNode(new Vector2(-1, 2)), graph.GetNode(new Vector2(0, 1)));
         graph.add(graph.GetNode(new Vector2(0, 1)), graph.GetNode(new Vector2(-1, 2)));
 

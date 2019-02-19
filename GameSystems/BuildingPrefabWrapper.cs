@@ -7,4 +7,5 @@ public class BuildingPrefabWrapper : MonoBehaviour {
     public GameObject[] buildings = new GameObject[10];
     public GameObject home;
     public GameObject road;
+    public GameObject player;
 }
