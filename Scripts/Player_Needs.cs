@@ -8,7 +8,7 @@ public class Player_Needs : MonoBehaviour {
     // Not sure if we need HP for now so I will just comments it out.
     private float playerMaxHP = 100;
     public float playerCurrentHP;
-    public int playerHPInt; //conver float to int. | to display as whole number
+    private int playerHPInt; //conver float to int. | to display as whole number
 
     private float playerMaxPower = 100;
     public float playerCurrentPower;
@@ -20,9 +20,6 @@ public class Player_Needs : MonoBehaviour {
     private float playerMaxHunger = 100;
     public float playerCurrentHunger;
     private int playerHungerInt; //convert float to int. | to display as whole number
-
-    private float timer = 0.0f;
-    private const float time = 0.1f; // 1 second
 
     //Text Update stuff for testing purpose on Player HUD
     public Text textUpdateO2;
@@ -46,38 +43,45 @@ public class Player_Needs : MonoBehaviour {
         //If player have 0 health = dead
         if (playerCurrentHP <= 0)
         {
-            Destroy(this.gameObject);
+            GameStateController.Instance.endGame();
         }
 
         // Decreasing Hunger/Hydration/O2 overtime set by "time"
-        playerCurrentO2 -= 2 * Time.deltaTime;
+        playerCurrentO2 -= Time.deltaTime;
         playerO2Int = (int)playerCurrentO2;
 
-        playerCurrentHunger -= 2 * Time.deltaTime;
+        playerCurrentHunger -= Time.deltaTime;
         playerHungerInt = (int)playerCurrentHunger;
 
-        playerCurrentPower -= 2 * Time.deltaTime;
+        playerCurrentPower -= Time.deltaTime;
+
+        if (playerCurrentHP > 100.0f)
+        {
+            playerCurrentHP = playerMaxHP;
+        }
+        if (playerCurrentHunger > 100.0f)
+        {
+            playerCurrentHunger = playerMaxHunger;
+        }
+        if (playerCurrentO2 > 100.0f)
+        {
+            playerCurrentO2 = playerMaxO2;
+        }
+        if (playerCurrentPower > 100.0f)
+        {
+            playerCurrentPower = playerMaxPower;
+        }
 
         UpdateText();
 
-        if (playerCurrentPower > 75.0f || playerCurrentO2 > 75.0f || playerCurrentHunger > 75.0f)
+        if (playerCurrentPower > 25.0f || playerCurrentO2 > 25.0f || playerCurrentHunger > 25.0f)
         {
             gameObject.GetComponent<Player_Movement>().movementSpeed = 15;
         }
 
-        if (playerCurrentPower <= 75.0f || playerCurrentO2 <= 75.0f || playerCurrentHunger <= 75.0f)
-        {
-            gameObject.GetComponent<Player_Movement>().movementSpeed = 11;
-        }
-
-        if (playerCurrentPower <= 50.0f || playerCurrentO2 <= 50.0f || playerCurrentHunger <= 50.0f)
-        {
-            gameObject.GetComponent<Player_Movement>().movementSpeed = 7;
-        }
-
         if (playerCurrentPower <= 25.0f || playerCurrentO2 <= 25.0f || playerCurrentHunger <= 25.0f)
         {
-            gameObject.GetComponent<Player_Movement>().movementSpeed = 3;
+            gameObject.GetComponent<Player_Movement>().movementSpeed = 5;
         }
 	}
 
