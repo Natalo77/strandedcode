@@ -15,19 +15,19 @@ public class Player_Needs : MonoBehaviour {
     
     private float playerMaxO2 = 100;
     public float playerCurrentO2;
-    private int playerO2Int; //convert float to int. | to display as whole number
+    public int playerO2Int; //convert float to int. | to display as whole number
 
     private float playerMaxHunger = 100;
     public float playerCurrentHunger;
-    private int playerHungerInt; //convert float to int. | to display as whole number
+    public int playerHungerInt; //convert float to int. | to display as whole number
 
-    private float timer = 0.0f;
-    private const float time = 0.1f; // 1 second
+    //private float timer = 0.0f;
+    //private const float time = 0.1f; // 1 second
 
     //Text Update stuff for testing purpose on Player HUD
     public Text textUpdateO2;
     public Text textUpdateHunger;
-    public Text textUpdateHydration;
+    //public Text textUpdateHydration;
 
     // Use this for initialization
     void Start () {
@@ -58,7 +58,7 @@ public class Player_Needs : MonoBehaviour {
 
         playerCurrentPower -= 2 * Time.deltaTime;
 
-        UpdateText();
+        //UpdateText();
 
         if (playerCurrentPower > 75.0f || playerCurrentO2 > 75.0f || playerCurrentHunger > 75.0f)
         {
@@ -81,7 +81,7 @@ public class Player_Needs : MonoBehaviour {
         }
 	}
 
-    //Update Text on HUD
+    //Update Text on HUD | for testing purpose
     public void UpdateText()
     {        
         //textUpdateO2.text = "O2: " + playerO2Int;
