@@ -52,7 +52,7 @@ public class Player_Movement : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "Oxygen")
+        if (other.gameObject.tag == "ShipOxygen")
         {
             gameObject.GetComponent<Player_Needs>().playerCurrentO2 += Time.deltaTime * 5;
         }

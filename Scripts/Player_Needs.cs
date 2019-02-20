@@ -8,7 +8,7 @@ public class Player_Needs : MonoBehaviour {
     // Not sure if we need HP for now so I will just comments it out.
     private float playerMaxHP = 100;
     public float playerCurrentHP;
-    private int playerHPInt; //conver float to int. | to display as whole number
+    public int playerHPInt; //conver float to int. | to display as whole number
 
     private float playerMaxPower = 100;
     public float playerCurrentPower;
@@ -25,7 +25,8 @@ public class Player_Needs : MonoBehaviour {
     //Text Update stuff for testing purpose on Player HUD
     public Text textUpdateO2;
     public Text textUpdateHunger;
-    //public Text textUpdateHydration;
+
+    public bool power, O2, hunger;
 
     // Use this for initialization
     void Start () {
@@ -35,27 +36,21 @@ public class Player_Needs : MonoBehaviour {
         playerCurrentHunger = playerMaxHunger;
         playerCurrentHP = playerMaxHP;
 
-        //playerCurrentO2 = Mathf.Round(playerCurrentO2);
-        
+        power = true;
+        O2 = true;
+        hunger = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        // Call DecreaseNeeds function
+        DecreaseNeeds(power, O2, hunger);
         //If player have 0 health = dead
         if (playerCurrentHP <= 0)
         {
             GameStateController.Instance.endGame();
         }
-
-        // Decreasing Hunger/Hydration/O2 overtime set by "time"
-        playerCurrentO2 -= Time.deltaTime;
-        playerO2Int = (int)playerCurrentO2;
-
-        playerCurrentHunger -= Time.deltaTime;
-        playerHungerInt = (int)playerCurrentHunger;
-
-      
-        playerCurrentPower -= Time.deltaTime;
 
 
         if (playerCurrentHP > 100.0f)
@@ -94,6 +89,19 @@ public class Player_Needs : MonoBehaviour {
         //textUpdateO2.text = "O2: " + playerO2Int;
         //textUpdateHunger.text = "Hunger: " + playerHungerInt;
         //textUpdateHydration.text = "Hydration: " + playerHungerInt;         
+    }
+
+    public void DecreaseNeeds(bool power, bool O2, bool hunger)
+    {
+        // Decreasing Hunger/Hydration/O2 overtime set by "time"
+        playerCurrentO2 -= Time.deltaTime;
+        playerO2Int = (int)playerCurrentO2;
+
+        playerCurrentHunger -= Time.deltaTime;
+        playerHungerInt = (int)playerCurrentHunger;
+
+
+        playerCurrentPower -= Time.deltaTime;
     }
 
 }
