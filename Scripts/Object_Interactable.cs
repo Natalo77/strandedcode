@@ -1,48 +1,65 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Object_Interactable : MonoBehaviour {
-    public Transform other; // interactavle object
-    private Player_Needs playerNeeds;
+public class Object_Interactable : MonoBehaviour
+{
+    public Transform other; // interactable object
+    private Player_Needs playerNeeds; // will be needed to call some variable from Player_Needs
 
     public GameObject showText;
+    public GameObject showText1; // for tutorial purpose
 
-   //public Texture BoxTexture; // Drag a Texture onto this item in the Inspector
-   // GUIContent content;
+    GameObject targetTag;
+    GameObject player;
+    Player_Needs refillNeed;
+    TargetIndicator targetIndicator;
 
-	// Use this for initialization
-	void Start () {
-        //content = new GUIContent("This is a box", BoxTexture, "This is a tooltip");
-        GameObject playerNeedsOb = GameObject.FindWithTag("Player");
-        if (playerNeedsOb != null)
-        {
-            playerNeeds = playerNeeds.GetComponent<Player_Needs>();
-        }
-        if (playerNeeds == null)
-        {
-            Debug.Log("Cannot find 'GameController' Script");
-        }
+    private void Start()
+    {
+        targetTag = GameObject.FindWithTag("Target");
+        player = GameObject.FindWithTag("Player");
+        refillNeed = player.GetComponent<Player_Needs>();
+        targetIndicator = GetComponent<TargetIndicator>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		if (other)
+
+    // Update is called once per frame
+    void Update()
+    {
+        refillNeed = player.GetComponent<Player_Needs>();
+        if (other)
         {
-            GameObject player = GameObject.FindWithTag("Player");
-            Player_Needs refillNeed = player.GetComponent<Player_Needs>();
             float dist = Vector3.Distance(other.position, transform.position);
-            print("Distance to other: " + dist);
-            if(dist < 5)
+            if (dist < targetIndicator.m_effectiveDistance)
             {
-                Debug.Log("Player is close, render the box naw");
-                showText.SetActive(!false);
+                showText.SetActive(true);
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     refillNeed.playerCurrentO2 = 100.2f;
+                    // for Tutorial purpose
+                    showText1.SetActive(true);
+                }
+            }
+            if (dist > targetIndicator.m_effectiveDistance)
+            {
+                // Disable text when out of range
+                showText.SetActive(false);
+                if (Input.GetKeyDown(KeyCode.N))
+                {
+                    showText1.SetActive(false);
                 }
             }
         }
-	}
+    }
+
+   /* public void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player") targetIndicator.gameObject.GetComponent<Renderer>().enabled = false;
+    }
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player") targetIndicator.gameObject.GetComponent<Renderer>().enabled = true;
+    }*/
 }

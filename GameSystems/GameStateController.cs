@@ -5,13 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class GameStateController : Singleton<GameStateController> {
 
-
-    private int x = 1;
+    private GameObject spawn;
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        spawn = GameObject.FindGameObjectWithTag("Spawn");
+        Scene scene = SceneManager.GetActiveScene();
+
+        if (scene.name.Equals("Level"))
+        {
+            TESTFUNCTION_dropPlayer();
+        }
+    }
 
 
 	
@@ -29,10 +34,6 @@ public class GameStateController : Singleton<GameStateController> {
         {
             beginGen();
         }
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            TESTFUNCTION_dropPlayer();
-        }
     }
 
     public void endGame()
@@ -44,7 +45,7 @@ public class GameStateController : Singleton<GameStateController> {
     public void startGame()
     {
         Debug.Log("Loading main game scene");
-        SceneManager.LoadScene("GeneratorTest");//"main");
+        SceneManager.LoadScene/**("GeneratorTest");**/("Level");
     }
 
     public void beginGen()
@@ -54,6 +55,7 @@ public class GameStateController : Singleton<GameStateController> {
 
     public void TESTFUNCTION_dropPlayer()
     {
-        GameObject.Instantiate(GetComponent<BuildingPrefabWrapper>().player, new Vector3(25, 5, 0), Quaternion.Euler(0, 0, 0));
+        Debug.Log("Spawning Player");
+        GameObject.Instantiate(GetComponent<BuildingPrefabWrapper>().player, spawn.transform.position, Quaternion.Euler(0, 0, 0));
     }
 }
