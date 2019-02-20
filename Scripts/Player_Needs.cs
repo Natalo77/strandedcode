@@ -50,7 +50,7 @@ public class Player_Needs : MonoBehaviour {
         //If player have 0 health = dead
         if (playerCurrentHP <= 0)
         {
-            GameStateController.Instance.endGame();
+            //GameStateController.Instance.endGame();
         }
 
         playerHPInt = (int)playerCurrentHP;
