@@ -25,39 +25,36 @@ public class TargetIndicator : MonoBehaviour
     public bool ShowDebugLines;
     //Indicates if the object is out of the screen
     private bool m_outOfScreen;
-
+    private IEnumerator coroutine;
     //GameObject playeR;
-    
-  
+
+
     void Start()
     {
-        StartCoroutine(RelaxSon());
+        coroutine = WaitAndPrint(0.1f);
+        StartCoroutine(coroutine);
+        /*mainCamera = Camera.main;
+        Debug.Assert((mainCamera != null), "There needs to be a Camera object in the scene for the OTI to display");
+        mainCanvas = FindObjectOfType<Canvas>();
+        Debug.Assert((mainCanvas != null), "There needs to be a Canvas object in the scene for the OTI to display");
+        InstainateTargetIcon();*/
+    }
+    private IEnumerator WaitAndPrint(float waitTime)
+    {
+        // suspend execution for ? seconds
+        yield return new WaitForSeconds(waitTime);
         mainCamera = Camera.main;
         Debug.Assert((mainCamera != null), "There needs to be a Camera object in the scene for the OTI to display");
         mainCanvas = FindObjectOfType<Canvas>();
         Debug.Assert((mainCanvas != null), "There needs to be a Canvas object in the scene for the OTI to display");
         InstainateTargetIcon();
-        UpdateTargetIconPosition();
-        //playeR = GameObject.FindWithTag("Player");
-        //targetTag = GameObject.FindGameObjectsWithTag("Target");
-        
     }
 
-    IEnumerator RelaxSon()
-    {
-        yield return new WaitForSeconds(3);
-       /* mainCamera = Camera.main;
-        Debug.Assert((mainCamera != null), "There needs to be a Camera object in the scene for the OTI to display");
-        mainCanvas = FindObjectOfType<Canvas>();
-        Debug.Assert((mainCanvas != null), "There needs to be a Canvas object in the scene for the OTI to display");
-        //InstainateTargetIcon();
-        UpdateTargetIconPosition();
-        //playeR = GameObject.FindWithTag("Player");
-        //targetTag = GameObject.FindGameObjectsWithTag("Target");
-        */
-    }
+
     void Update()
     {
+        coroutine = WaitAndPrint(0.0f);
+        StartCoroutine(coroutine);
         if (ShowDebugLines)
             DrawDebugLines();
         UpdateTargetIconPosition();

@@ -21,6 +21,15 @@ public class Player_HUD : MonoBehaviour {
     void Update ()
     {
         UpdateText();
+        if (pNeeds)
+        {
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                gameObject.GetComponent<Canvas>().enabled = !gameObject.GetComponent<Canvas>().enabled;
+            }
+        }
+        
+
     }
 
     //Update Text on HUD
