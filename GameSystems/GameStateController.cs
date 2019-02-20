@@ -9,19 +9,33 @@ public class GameStateController : Singleton<GameStateController> {
 
 	// Use this for initialization
 	void Start () {
-        spawn = GameObject.FindGameObjectWithTag("Spawn");
         Scene scene = SceneManager.GetActiveScene();
-
-        if (scene.name.Equals("Level"))
+        if (scene.buildIndex == 1)
         {
-            TESTFUNCTION_dropPlayer();
+        StartCoroutine(beginGen());
+        Debug.Log("Gen Returned");
+
+        spawn = GameObject.FindGameObjectWithTag("Spawn");
+        TESTFUNCTION_dropPlayer();
         }
+
     }
 
 
-	
-	// Update is called once per frame
-	void Update () {
+    // called second
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("OnSceneLoaded: " + scene.name);
+        //Debug.Log(mode);
+
+        
+
+
+    }
+
+
+    // Update is called once per frame
+    void Update () {
         if (Input.GetKeyDown(KeyCode.G))
         {
             startGame();
@@ -48,9 +62,13 @@ public class GameStateController : Singleton<GameStateController> {
         SceneManager.LoadScene/**("GeneratorTest");**/("Level");
     }
 
-    public void beginGen()
+    public IEnumerator beginGen()
     {
+        Debug.Log("GenStarted");
         this.gameObject.AddComponent<Generator_Sys>();
+
+
+        yield return true;
     }
 
     public void TESTFUNCTION_dropPlayer()

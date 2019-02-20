@@ -449,7 +449,7 @@ public class Generator_Sys : MonoBehaviour  {
         yield return true;
     }
 
-    private enum BlockContent { RoadUP, RoadRIGHT, Intersection, TN, TE, TS, TW, TwoWayN, TwoWayE, CnrNE, CnrSE, CnrSW, CnrNW, DeadN, DeadE, DeadS, DeadW, Plaza, Building, Empty, B2x1E, B2x1S, B2x2, BDL, BDR, BUL, BUR, Filled };
+    private enum BlockContent { Ship, RoadUP, RoadRIGHT, Intersection, TN, TE, TS, TW, TwoWayN, TwoWayE, CnrNE, CnrSE, CnrSW, CnrNW, DeadN, DeadE, DeadS, DeadW, Plaza, Building, Empty, B2x1E, B2x1S, B2x2, BDL, BDR, BUL, BUR, Filled };
 
     /**
      * generates an actual block in position.
@@ -540,7 +540,9 @@ public class Generator_Sys : MonoBehaviour  {
                 block[y, 6] = BlockContent.Empty;
             }
         }
+
         
+
         //Fill 1x1 buildings.
         for (int x = 1; x < 7; x += 2)
         {
@@ -550,7 +552,13 @@ public class Generator_Sys : MonoBehaviour  {
             }
         }
 
-        
+        //If the direction is NONE it's the home tile so override the home tile.
+        if (direction == Direction.NONE)
+        {
+            block[3, 3] = BlockContent.Empty;
+        }
+
+
 
         /*
          *  0 1 2 3 4 5 6 
@@ -562,11 +570,11 @@ public class Generator_Sys : MonoBehaviour  {
          *  - b - b - b - 5
          *  - - - - - - - 6
          *  
-         */ 
+         */
 
-        
+
         //Fill 2x1 buildings across.
-        for(int x = 1; x <= 3; x += 2)
+        for (int x = 1; x <= 3; x += 2)
         {
             for(int y = 1; x <= 3; x += 2)
             {
@@ -911,6 +919,8 @@ public class Generator_Sys : MonoBehaviour  {
             }
         }
         
+        
+        /*
         int rowLength = block.GetLength(0);
         int colLength = block.GetLength(1);
 
@@ -924,7 +934,7 @@ public class Generator_Sys : MonoBehaviour  {
             Debug.Log(a);
             Debug.Log(Environment.NewLine + Environment.NewLine);
         }
-
+        */
         drawBlock(location, block);
 
         yield return true; 
@@ -960,7 +970,7 @@ public class Generator_Sys : MonoBehaviour  {
                         GameObject.Instantiate(randomLBuilding(), position + values[y - 1, x], Quaternion.Euler(0, -90, 0));
                         break;
                     case BlockContent.Building:
-                        GameObject.Instantiate(randomSingleBuilding(), position + values[y, x], Quaternion.Euler(0, 0, 0));
+                        GameObject.Instantiate(randomSingleBuilding(), position + values[y, x], Quaternion.Euler(0, ((rand.Next(0, 361) % 90) * 90), 0));
                         break;
                     case BlockContent.CnrNE:
                         GameObject.Instantiate(GameStateController.Instance.GetComponent<BuildingPrefabWrapper>().Corner, position + values[y, x], Quaternion.Euler(0, 0, 0));
@@ -1015,6 +1025,9 @@ public class Generator_Sys : MonoBehaviour  {
                         break;
                     case BlockContent.TwoWayN:
                         GameObject.Instantiate(GameStateController.Instance.GetComponent<BuildingPrefabWrapper>().TwoWay, position + values[y, x], Quaternion.Euler(0, 180, 0));
+                        break;
+                    case BlockContent.Ship:
+                        GameObject.Instantiate(GameStateController.Instance.GetComponent<BuildingPrefabWrapper>().home, position + values[y, x], Quaternion.Euler(0, 0, 0));
                         break;
                 }
 
