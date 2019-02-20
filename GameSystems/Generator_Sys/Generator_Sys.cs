@@ -7,6 +7,26 @@ public class Generator_Sys : MonoBehaviour  {
 
     private RoadGraph<RoadNode> graph;
     private System.Random rand;
+    private GameObject player;
+
+    private int numN = 0;
+    private int numS = 0;
+    private int numE = 0;
+    private int numW = 0;
+                                                    //      0                   1               2                   3                 4                 5                 6
+    private Vector3[,] values = new Vector3[7, 7] { { new Vector3(-75,0,75), new Vector3(-50,0,75), new Vector3(-25,0,75), new Vector3(0,0,75), new Vector3(25,0,75), new Vector3(50,0,75), new Vector3(75,0,75) },   //0
+                                                    { new Vector3(-75,0,50), new Vector3(-50,0,50), new Vector3(-25,0,50), new Vector3(0,0,50), new Vector3(25,0,50), new Vector3(50,0,50), new Vector3(75,0,50) },   //1
+                                                    { new Vector3(-75,0,25), new Vector3(-50,0,25), new Vector3(-25,0,25), new Vector3(0,0,25), new Vector3(25,0,25), new Vector3(50,0,25), new Vector3(75,0,25) },   //2
+                                                    { new Vector3(-75,0,0), new Vector3(-50,0,0), new Vector3(-25,0,0), new Vector3(0,0,0), new Vector3(25,0,0), new Vector3(50,0,0), new Vector3(75,0,0) },   //3
+                                                    { new Vector3(-75,0,-25), new Vector3(-50,0,-25), new Vector3(-25,0,-25), new Vector3(0,0,-25), new Vector3(25,0,-25), new Vector3(50,0,-25), new Vector3(75,0,-25) },   //4
+                                                    { new Vector3(-75,0,-50), new Vector3(-50,0,-50), new Vector3(-25,0,-50), new Vector3(0,0,-50), new Vector3(25,0,-50), new Vector3(50,0,-50), new Vector3(75,0,-50) },   //5
+                                                    { new Vector3(-75,0,-75), new Vector3(-50,0,-75), new Vector3(-25,0,-75), new Vector3(0,0,-75), new Vector3(25,0,-75), new Vector3(50,0,-75), new Vector3(75,0,-75) } }; //6
+
+    private const int distancePerBlock = 150;
+
+    public enum Direction { N, E, S, W, NONE};
+
+    
 
     //Creates the initial Scene point.
     public void Start()
@@ -16,7 +36,8 @@ public class Generator_Sys : MonoBehaviour  {
 
         //Initialize the initial state.
         //Adjacents.
-        graph.add(
+        /*
+         graph.add(
             new RoadNode(
                 true, 
                 GameStateController.Instance.GetComponent<BuildingPrefabWrapper>().home,
@@ -138,6 +159,127 @@ public class Generator_Sys : MonoBehaviour  {
                 new Vector2(-2, 1)
                 ));
 
+        //Edges of 3x3 block.
+        graph.add(
+            new RoadNode(
+                true,
+                graph.GetNode(new Vector2(2, 1)).getblockNW(),
+                null,
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(3, 2)
+                ));
+
+        graph.add(
+            new RoadNode(
+                true,
+                graph.GetNode(new Vector2(1, 0)).getblockES(),
+                null,
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(3, 0)
+                ));
+
+        graph.add(
+            new RoadNode(
+                true,
+                graph.GetNode(new Vector2(2, -1)).getblockES(),
+                null,
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(3, -2)
+                ));
+
+        graph.add(
+            new RoadNode(
+                false,
+                graph.GetNode(new Vector2(2, -1)).getblockES(),
+                null,
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(2, -3)
+                ));
+
+        graph.add(
+            new RoadNode(
+                false,
+                graph.GetNode(new Vector2(0, -1)).getblockES(),
+                null,
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(0, -3)
+                ));
+
+        graph.add(
+            new RoadNode(
+                false,
+                graph.GetNode(new Vector2(-2, -1)).getblockES(),
+                null,
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(-2, -3)
+                ));
+
+        graph.add(
+            new RoadNode(
+                true,
+                null,
+                graph.GetNode(new Vector2(-1, -2)).getblockNW(),
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(-3, -2)
+                ));
+
+        graph.add(
+            new RoadNode(
+                true,
+                null,
+                graph.GetNode(new Vector2(-1, 0)).getblockNW(),
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(-3, 0)
+                ));
+
+        graph.add(
+            new RoadNode(
+                true,
+                null,
+                graph.GetNode(new Vector2(-1, 2)).getblockNW(),
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(-3, 2)
+                ));
+
+        graph.add(
+            new RoadNode(
+                false,
+                null,
+                graph.GetNode(new Vector2(-2, 1)).getblockNW(),
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(-2, 3)
+                ));
+
+        graph.add(
+            new RoadNode(
+                false,
+                null,
+                graph.GetNode(new Vector2(0, 1)).getblockNW(),
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(0, 3)
+                ));
+
+        graph.add(
+            new RoadNode(
+                false,
+                null,
+                graph.GetNode(new Vector2(2, 1)).getblockNW(),
+                RoadNode.EndType.Four,
+                RoadNode.EndType.Four,
+                new Vector2(2, 3)
+                ));
+
 
         //Edges.
         graph.add(graph.GetNode(new Vector2(0, 1)), graph.GetNode(new Vector2(1, 0)));
@@ -195,13 +337,116 @@ public class Generator_Sys : MonoBehaviour  {
 
         graph.add(graph.GetNode(new Vector2(-1, 2)), graph.GetNode(new Vector2(0, 1)));
         graph.add(graph.GetNode(new Vector2(0, 1)), graph.GetNode(new Vector2(-1, 2)));
+        */
+
+        StartCoroutine(generateBlock(new Vector3(0, 0, 0), Direction.NONE));
+        
 
     }
 
-    //Generate sections according to the location passed in.
-    public void generate(Vector2 location)
+    public void Update()
     {
+        //Find the player.
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
 
+        //check if generations need to be done.
+        if (player != null)
+        {
+            if (player.transform.position.x > 25 + numE * 150)
+            {
+                //generateEast.
+                numE++;
+                StartCoroutine(generateBlockLine(Direction.E));
+            }
+            if (player.transform.position.z > 25 + numN * 150)
+            {
+                //generate North.
+                numN++;
+                StartCoroutine(generateBlockLine(Direction.N));
+            }
+            if (player.transform.position.x < -25 + numW * -150)
+            {
+                //generate West.
+                numW++;
+                StartCoroutine(generateBlockLine(Direction.W));
+            }
+            if (player.transform.position.z < -25 + numS * -150)
+            {
+                //generate south.
+                numS++;
+                StartCoroutine(generateBlockLine(Direction.S));
+            }
+        }
+    }
+
+    
+
+    //Generate sections according to the location passed in.
+    public IEnumerator generateBlockLine(Direction whichWay)
+    {
+        //generate out from the center.
+        if (whichWay == Direction.N)
+        {
+            StartCoroutine(generateBlock(new Vector3(0, 0, numN * distancePerBlock), whichWay));
+            //Go west.
+            for(int x = 0; x < numW; x++)
+            {
+                StartCoroutine(generateBlock(new Vector3((-x - 1) * distancePerBlock, 0, numN * distancePerBlock), whichWay));
+            }
+            //Go east.
+            for(int x = 0; x < numE; x++)
+            {
+                StartCoroutine(generateBlock(new Vector3((x + 1) * distancePerBlock, 0, numN * distancePerBlock), whichWay));
+            }
+
+        } 
+        else if(whichWay == Direction.E)
+        {
+            StartCoroutine(generateBlock(new Vector3(numE * distancePerBlock, 0, 0), whichWay));
+            //Go north
+            for(int x = 0; x < numN; x++)
+            {
+                StartCoroutine(generateBlock(new Vector3(numE * distancePerBlock, 0, (x + 1) * distancePerBlock), whichWay));
+            }
+            //go south.
+            for(int x = 0; x < numS; x++)
+            {
+                StartCoroutine(generateBlock(new Vector3(numE * distancePerBlock, 0, (-x - 1) * distancePerBlock), whichWay));
+            }
+        }
+        else if(whichWay == Direction.S)
+        {
+            StartCoroutine(generateBlock(new Vector3(0, 0, -numS * distancePerBlock), whichWay));
+            //go left.
+            for(int x = 0; x < numW; x++)
+            {
+                StartCoroutine(generateBlock(new Vector3((-x - 1) * distancePerBlock, 0, -numS * distancePerBlock), whichWay));
+            }
+            //go right.
+            for(int x = 0; x < numE; x++)
+            {
+                StartCoroutine(generateBlock(new Vector3((x + 1) * distancePerBlock, 0, -numS * distancePerBlock), whichWay));
+            }
+        }
+        else
+        {
+            StartCoroutine(generateBlock(new Vector3(-numW * distancePerBlock, 0, 0), whichWay));
+            //go up
+            for(int x = 0; x < numN; x++)
+            {
+                StartCoroutine(generateBlock(new Vector3(-numW * distancePerBlock, 0, (x + 1) * distancePerBlock), whichWay));
+            }
+            //go down.
+            for(int x = 0; x < numS; x++)
+            {
+                StartCoroutine(generateBlock(new Vector3(-numW * distancePerBlock, 0, (-x - 1) * distancePerBlock), whichWay));
+            }
+        }
+            
+        yield return true;
     }
 
     private enum BlockContent { Ship, RoadUP, RoadRIGHT, Intersection, TN, TE, TS, TW, TwoWayN, TwoWayE, CnrNE, CnrSE, CnrSW, CnrNW, DeadN, DeadE, DeadS, DeadW, Plaza, Building, Empty, B2x1E, B2x1S, B2x2, BDL, BDR, BUL, BUR, Filled };
@@ -792,6 +1037,7 @@ public class Generator_Sys : MonoBehaviour  {
     }
 
     
+
     //Generate a random Roadnode.
     private RoadNode makeNode()
     {
@@ -801,6 +1047,24 @@ public class Generator_Sys : MonoBehaviour  {
     //Get a random 1x1 building
     private GameObject randomSingleBuilding()
     {
-        return GameStateController.Instance.GetComponent<BuildingPrefabWrapper>().buildings[rand.Next(0, 9)];
+        return GameStateController.Instance.GetComponent<BuildingPrefabWrapper>().buildings1x1[rand.Next(0, 2)];
+    }
+
+    //Get a random 2x1 building
+    private GameObject randomDoubleBuilding()
+    {
+        return GameStateController.Instance.GetComponent<BuildingPrefabWrapper>().buildings2x1[rand.Next(0,2)];
+    }
+
+    //Get a random L shaped building.
+    private GameObject randomLBuilding()
+    {
+        return GameStateController.Instance.GetComponent<BuildingPrefabWrapper>().buildingsL[rand.Next(0,2)];
+    }
+
+    //get a random Quad building.
+    private GameObject randomQuadBuilding()
+    {
+        return GameStateController.Instance.GetComponent<BuildingPrefabWrapper>().buildings2x2[rand.Next(0,2)];
     }
 }
