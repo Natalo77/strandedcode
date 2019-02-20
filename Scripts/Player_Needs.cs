@@ -70,26 +70,24 @@ public class Player_Needs : MonoBehaviour {
             playerCurrentPower = playerMaxPower;
         }
 
-        UpdateText();
-
+        //Reduce movement speed if any need is below 25.
         if (playerCurrentPower > 25.0f || playerCurrentO2 > 25.0f || playerCurrentHunger > 25.0f)
         {
             gameObject.GetComponent<Player_Movement>().movementSpeed = 15;
         }
-
         if (playerCurrentPower <= 25.0f || playerCurrentO2 <= 25.0f || playerCurrentHunger <= 25.0f)
         {
             gameObject.GetComponent<Player_Movement>().movementSpeed = 5;
         }
-	}
 
-    //Update Text on HUD | for testing purpose
-    public void UpdateText()
-    {        
-        //textUpdateO2.text = "O2: " + playerO2Int;
-        //textUpdateHunger.text = "Hunger: " + playerHungerInt;
-        //textUpdateHydration.text = "Hydration: " + playerHungerInt;         
+        //If oxygen or hunger run out, reduce health.
+        if (playerCurrentO2 <= float.Epsilon || playerCurrentHunger <= float.Epsilon)
+        {
+            playerCurrentHP -= Time.deltaTime;
+            playerHPInt = (int)playerCurrentHP;
+        }
     }
+
 
     public void DecreaseNeeds(bool power, bool O2, bool hunger)
     {
