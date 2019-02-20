@@ -89,7 +89,7 @@ public class Player_Needs : MonoBehaviour {
 
 
         //Reduce movement speed if any need is below 25.
-
+        /*
         if (playerCurrentPower > 25.0f || playerCurrentO2 > 25.0f || playerCurrentHunger > 25.0f)
         {
             gameObject.GetComponent<Player_Movement>().movementSpeed = 15;
@@ -97,7 +97,7 @@ public class Player_Needs : MonoBehaviour {
         if (playerCurrentPower <= 25.0f || playerCurrentO2 <= 25.0f || playerCurrentHunger <= 25.0f)
         {
             gameObject.GetComponent<Player_Movement>().movementSpeed = 5;
-        }
+        }*/
 
 	
 
