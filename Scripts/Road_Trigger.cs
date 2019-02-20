@@ -9,7 +9,7 @@ public class Road_Trigger : MonoBehaviour {
         Debug.Log("A");
         if (!GetComponentInParent<Road_Info>().usedByGenerator && other.gameObject.tag == "Player")
         {
-            GameStateController.Instance.GetComponent<Generator_Sys>().generate(GetComponentInParent<Road_Info>().location);
+            //GameStateController.Instance.GetComponent<Generator_Sys>().generate(GetComponentInParent<Road_Info>().location);
             GetComponentInParent<Road_Info>().hasBeenUsed();
         }
     }
