@@ -25,39 +25,36 @@ public class TargetIndicator : MonoBehaviour
     public bool ShowDebugLines;
     //Indicates if the object is out of the screen
     private bool m_outOfScreen;
-
+    private IEnumerator coroutine;
     //GameObject playeR;
-    
-  
+
+
     void Start()
     {
-        StartCoroutine(RelaxSon());
+        coroutine = WaitAndPrint(0.1f);
+        StartCoroutine(coroutine);
+        /*mainCamera = Camera.main;
+        Debug.Assert((mainCamera != null), "There needs to be a Camera object in the scene for the OTI to display");
+        mainCanvas = FindObjectOfType<Canvas>();
+        Debug.Assert((mainCanvas != null), "There needs to be a Canvas object in the scene for the OTI to display");
+        InstainateTargetIcon();*/
+    }
+    private IEnumerator WaitAndPrint(float waitTime)
+    {
+        // suspend execution for ? seconds
+        yield return new WaitForSeconds(waitTime);
         mainCamera = Camera.main;
         Debug.Assert((mainCamera != null), "There needs to be a Camera object in the scene for the OTI to display");
         mainCanvas = FindObjectOfType<Canvas>();
         Debug.Assert((mainCanvas != null), "There needs to be a Canvas object in the scene for the OTI to display");
         InstainateTargetIcon();
-        UpdateTargetIconPosition();
-        //playeR = GameObject.FindWithTag("Player");
-        //targetTag = GameObject.FindGameObjectsWithTag("Target");
-        
     }
 
-    IEnumerator RelaxSon()
-    {
-        yield return new WaitForSecondsRealtime(5);
-       /* mainCamera = Camera.main;
-        Debug.Assert((mainCamera != null), "There needs to be a Camera object in the scene for the OTI to display");
-        mainCanvas = FindObjectOfType<Canvas>();
-        Debug.Assert((mainCanvas != null), "There needs to be a Canvas object in the scene for the OTI to display");
-        //InstainateTargetIcon();
-        UpdateTargetIconPosition();
-        //playeR = GameObject.FindWithTag("Player");
-        //targetTag = GameObject.FindGameObjectsWithTag("Target");
-        */
-    }
+
     void Update()
     {
+        coroutine = WaitAndPrint(0.0f);
+        StartCoroutine(coroutine);
         if (ShowDebugLines)
             DrawDebugLines();
         UpdateTargetIconPosition();
@@ -93,52 +90,46 @@ public class TargetIndicator : MonoBehaviour
     private void UpdateTargetIconPosition()
     {
         Vector3 newPos = transform.position;
-        try
+        newPos = mainCamera.WorldToViewportPoint(newPos);
+        //Simple check if the target object is out of the screen or inside
+        if (newPos.x > 1 || newPos.y > 1 || newPos.x < 0 || newPos.y < 0)
+            m_outOfScreen = true;
+        else
+            m_outOfScreen = false;
+        if (newPos.z < 0)
         {
-            newPos = mainCamera.WorldToViewportPoint(newPos);
+            newPos.x = 1f - newPos.x;
+            newPos.y = 1f - newPos.y;
+            newPos.z = 0;
+            newPos = Vector3Maxamize(newPos);
+        }
+        newPos = mainCamera.ViewportToScreenPoint(newPos);
+        newPos.x = Mathf.Clamp(newPos.x, m_edgeBuffer, Screen.width - m_edgeBuffer);
+        newPos.y = Mathf.Clamp(newPos.y, m_edgeBuffer, Screen.height - m_edgeBuffer);
+        m_icon.transform.position = newPos;
+        //Operations if the object is out of the screen
+        if (m_outOfScreen)
+        {
+            //Show the target off screen icon
+            m_iconImage.sprite = m_targetIconOffScreen;
+            if (PointTarget)
+            {
+                //Rotate the sprite towards the target object
+                var targetPosLocal = mainCamera.transform.InverseTransformPoint(transform.position);
+                var targetAngle = -Mathf.Atan2(targetPosLocal.x, targetPosLocal.y) * Mathf.Rad2Deg - 90;
+                //Apply rotation
+                m_icon.transform.eulerAngles = new Vector3(0, 0, targetAngle);
+            }
+
+        }
+        else
+        {
+            //Reset rotation to zero and swap the sprite to the "on screen" one
+            m_icon.transform.eulerAngles = new Vector3(0, 0, 0);
+            m_iconImage.sprite = m_targetIconOnScreen;
+        }
         
-            //Simple check if the target object is out of the screen or inside
-            if (newPos.x > 1 || newPos.y > 1 || newPos.x < 0 || newPos.y < 0)
-                m_outOfScreen = true;
-            else
-                m_outOfScreen = false;
-            if (newPos.z < 0)
-            {
-                newPos.x = 1f - newPos.x;
-                newPos.y = 1f - newPos.y;
-                newPos.z = 0;
-                newPos = Vector3Maxamize(newPos);
-            }
-            newPos = mainCamera.ViewportToScreenPoint(newPos);
-            newPos.x = Mathf.Clamp(newPos.x, m_edgeBuffer, Screen.width - m_edgeBuffer);
-            newPos.y = Mathf.Clamp(newPos.y, m_edgeBuffer, Screen.height - m_edgeBuffer);
-            m_icon.transform.position = newPos;
-            //Operations if the object is out of the screen
-            if (m_outOfScreen)
-            {
-                //Show the target off screen icon
-                m_iconImage.sprite = m_targetIconOffScreen;
-                if (PointTarget)
-                {
-                    //Rotate the sprite towards the target object
-                    var targetPosLocal = mainCamera.transform.InverseTransformPoint(transform.position);
-                    var targetAngle = -Mathf.Atan2(targetPosLocal.x, targetPosLocal.y) * Mathf.Rad2Deg - 90;
-                    //Apply rotation
-                    m_icon.transform.eulerAngles = new Vector3(0, 0, targetAngle);
-                }
 
-            }
-            else
-            {
-                //Reset rotation to zero and swap the sprite to the "on screen" one
-                m_icon.transform.eulerAngles = new Vector3(0, 0, 0);
-                m_iconImage.sprite = m_targetIconOnScreen;
-            }
-        }
-        catch (System.NullReferenceException e)
-        {
-
-        }
     }
 
     public void DrawDebugLines()
