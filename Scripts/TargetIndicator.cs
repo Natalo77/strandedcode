@@ -26,23 +26,42 @@ public class TargetIndicator : MonoBehaviour
     //Indicates if the object is out of the screen
     private bool m_outOfScreen;
 
-    GameObject[] targetTag;
+    //GameObject playeR;
     
   
     void Start()
     {
+        StartCoroutine(RelaxSon());
         mainCamera = Camera.main;
+        Debug.Assert((mainCamera != null), "There needs to be a Camera object in the scene for the OTI to display");
         mainCanvas = FindObjectOfType<Canvas>();
         Debug.Assert((mainCanvas != null), "There needs to be a Canvas object in the scene for the OTI to display");
         InstainateTargetIcon();
-        targetTag = GameObject.FindGameObjectsWithTag("Target");
+        UpdateTargetIconPosition();
+        //playeR = GameObject.FindWithTag("Player");
+        //targetTag = GameObject.FindGameObjectsWithTag("Target");
+        
+    }
+
+    IEnumerator RelaxSon()
+    {
+        yield return new WaitForSeconds(3);
+       /* mainCamera = Camera.main;
+        Debug.Assert((mainCamera != null), "There needs to be a Camera object in the scene for the OTI to display");
+        mainCanvas = FindObjectOfType<Canvas>();
+        Debug.Assert((mainCanvas != null), "There needs to be a Canvas object in the scene for the OTI to display");
+        //InstainateTargetIcon();
+        UpdateTargetIconPosition();
+        //playeR = GameObject.FindWithTag("Player");
+        //targetTag = GameObject.FindGameObjectsWithTag("Target");
+        */
     }
     void Update()
     {
         if (ShowDebugLines)
             DrawDebugLines();
         UpdateTargetIconPosition();
-        // when player nearb the target will be disabled and when the player press N it will activate again.
+        // when player near the target will be disabled and when the player press N it will activate again.
         if (player)
         {
             float dist = Vector3.Distance(player.position, transform.position);

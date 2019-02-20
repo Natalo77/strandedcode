@@ -8,7 +8,7 @@ public class Player_Needs : MonoBehaviour {
     // Not sure if we need HP for now so I will just comments it out.
     private float playerMaxHP = 100;
     public float playerCurrentHP;
-    private int playerHPInt; //conver float to int. | to display as whole number
+    public int playerHPInt; //conver float to int. | to display as whole number
 
     private float playerMaxPower = 100;
     public float playerCurrentPower;
@@ -20,12 +20,6 @@ public class Player_Needs : MonoBehaviour {
     private float playerMaxHunger = 100;
     public float playerCurrentHunger;
     public int playerHungerInt; //convert float to int. | to display as whole number
-
-
-    //Text Update stuff for testing purpose on Player HUD
-    public Text textUpdateO2;
-    public Text textUpdateHunger;
-    //public Text textUpdateHydration;
 
     // Use this for initialization
     void Start () {
@@ -46,6 +40,8 @@ public class Player_Needs : MonoBehaviour {
         {
             GameStateController.Instance.endGame();
         }
+
+        playerHPInt = (int)playerCurrentHP;
 
         // Decreasing Hunger/Hydration/O2 overtime set by "time"
         playerCurrentO2 -= Time.deltaTime;
@@ -75,7 +71,7 @@ public class Player_Needs : MonoBehaviour {
             playerCurrentPower = playerMaxPower;
         }
 
-        UpdateText();
+        //UpdateText();
 
         if (playerCurrentPower > 25.0f || playerCurrentO2 > 25.0f || playerCurrentHunger > 25.0f)
         {
@@ -87,13 +83,4 @@ public class Player_Needs : MonoBehaviour {
             gameObject.GetComponent<Player_Movement>().movementSpeed = 5;
         }
 	}
-
-    //Update Text on HUD | for testing purpose
-    public void UpdateText()
-    {        
-        //textUpdateO2.text = "O2: " + playerO2Int;
-        //textUpdateHunger.text = "Hunger: " + playerHungerInt;
-        //textUpdateHydration.text = "Hydration: " + playerHungerInt;         
-    }
-
 }
