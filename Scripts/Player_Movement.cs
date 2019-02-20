@@ -7,8 +7,8 @@ public class Player_Movement : MonoBehaviour
     Rigidbody player_RB;
     Animator player_Anim;
 
-    private float playerInputH;
-    private float playerInputV;
+    public float playerInputH;
+    public float playerInputV;
 
     public float movementSpeed;
 
@@ -24,6 +24,9 @@ public class Player_Movement : MonoBehaviour
     {
         playerInputH = Input.GetAxis("Horizontal");
         playerInputV = Input.GetAxis("Vertical");
+
+        //Debug.Log("Player_Movement: PlayerInputH: " + playerInputH + ", PlayerInputV: " + playerInputV);
+
         player_RB.velocity = new Vector3(movementSpeed * playerInputH, 0, movementSpeed * playerInputV);
     }
 

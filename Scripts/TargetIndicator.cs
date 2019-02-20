@@ -45,7 +45,7 @@ public class TargetIndicator : MonoBehaviour
 
     IEnumerator RelaxSon()
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSecondsRealtime(5);
        /* mainCamera = Camera.main;
         Debug.Assert((mainCamera != null), "There needs to be a Camera object in the scene for the OTI to display");
         mainCanvas = FindObjectOfType<Canvas>();
@@ -93,46 +93,52 @@ public class TargetIndicator : MonoBehaviour
     private void UpdateTargetIconPosition()
     {
         Vector3 newPos = transform.position;
-        newPos = mainCamera.WorldToViewportPoint(newPos);
-        //Simple check if the target object is out of the screen or inside
-        if (newPos.x > 1 || newPos.y > 1 || newPos.x < 0 || newPos.y < 0)
-            m_outOfScreen = true;
-        else
-            m_outOfScreen = false;
-        if (newPos.z < 0)
+        try
         {
-            newPos.x = 1f - newPos.x;
-            newPos.y = 1f - newPos.y;
-            newPos.z = 0;
-            newPos = Vector3Maxamize(newPos);
-        }
-        newPos = mainCamera.ViewportToScreenPoint(newPos);
-        newPos.x = Mathf.Clamp(newPos.x, m_edgeBuffer, Screen.width - m_edgeBuffer);
-        newPos.y = Mathf.Clamp(newPos.y, m_edgeBuffer, Screen.height - m_edgeBuffer);
-        m_icon.transform.position = newPos;
-        //Operations if the object is out of the screen
-        if (m_outOfScreen)
-        {
-            //Show the target off screen icon
-            m_iconImage.sprite = m_targetIconOffScreen;
-            if (PointTarget)
-            {
-                //Rotate the sprite towards the target object
-                var targetPosLocal = mainCamera.transform.InverseTransformPoint(transform.position);
-                var targetAngle = -Mathf.Atan2(targetPosLocal.x, targetPosLocal.y) * Mathf.Rad2Deg - 90;
-                //Apply rotation
-                m_icon.transform.eulerAngles = new Vector3(0, 0, targetAngle);
-            }
-
-        }
-        else
-        {
-            //Reset rotation to zero and swap the sprite to the "on screen" one
-            m_icon.transform.eulerAngles = new Vector3(0, 0, 0);
-            m_iconImage.sprite = m_targetIconOnScreen;
-        }
+            newPos = mainCamera.WorldToViewportPoint(newPos);
         
+            //Simple check if the target object is out of the screen or inside
+            if (newPos.x > 1 || newPos.y > 1 || newPos.x < 0 || newPos.y < 0)
+                m_outOfScreen = true;
+            else
+                m_outOfScreen = false;
+            if (newPos.z < 0)
+            {
+                newPos.x = 1f - newPos.x;
+                newPos.y = 1f - newPos.y;
+                newPos.z = 0;
+                newPos = Vector3Maxamize(newPos);
+            }
+            newPos = mainCamera.ViewportToScreenPoint(newPos);
+            newPos.x = Mathf.Clamp(newPos.x, m_edgeBuffer, Screen.width - m_edgeBuffer);
+            newPos.y = Mathf.Clamp(newPos.y, m_edgeBuffer, Screen.height - m_edgeBuffer);
+            m_icon.transform.position = newPos;
+            //Operations if the object is out of the screen
+            if (m_outOfScreen)
+            {
+                //Show the target off screen icon
+                m_iconImage.sprite = m_targetIconOffScreen;
+                if (PointTarget)
+                {
+                    //Rotate the sprite towards the target object
+                    var targetPosLocal = mainCamera.transform.InverseTransformPoint(transform.position);
+                    var targetAngle = -Mathf.Atan2(targetPosLocal.x, targetPosLocal.y) * Mathf.Rad2Deg - 90;
+                    //Apply rotation
+                    m_icon.transform.eulerAngles = new Vector3(0, 0, targetAngle);
+                }
 
+            }
+            else
+            {
+                //Reset rotation to zero and swap the sprite to the "on screen" one
+                m_icon.transform.eulerAngles = new Vector3(0, 0, 0);
+                m_iconImage.sprite = m_targetIconOnScreen;
+            }
+        }
+        catch (System.NullReferenceException e)
+        {
+
+        }
     }
 
     public void DrawDebugLines()

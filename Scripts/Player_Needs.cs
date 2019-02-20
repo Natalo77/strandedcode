@@ -55,15 +55,10 @@ public class Player_Needs : MonoBehaviour {
 
         playerHPInt = (int)playerCurrentHP;
 
-        // Decreasing Hunger/Hydration/O2 overtime set by "time"
-        playerCurrentO2 -= Time.deltaTime;
-        playerO2Int = (int)playerCurrentO2;
-
-        playerCurrentHunger -= Time.deltaTime;
-        playerHungerInt = (int)playerCurrentHunger;
+        
 
       
-        playerCurrentPower -= Time.deltaTime;
+        
 
 
 
@@ -83,6 +78,18 @@ public class Player_Needs : MonoBehaviour {
         {
             playerCurrentPower = playerMaxPower;
         }
+        if(playerCurrentHunger <= 0.0f)
+        {
+            playerCurrentHunger = 0.0f;
+        }
+        if (playerCurrentO2 <= 0.0f)
+        {
+            playerCurrentO2 = 0.0f;
+        }
+        if(playerCurrentPower <= 0.0f)
+        {
+            playerCurrentPower = 0.0f;
+        }
 
 
         //UpdateText();
@@ -99,15 +106,30 @@ public class Player_Needs : MonoBehaviour {
             gameObject.GetComponent<Player_Movement>().movementSpeed = 5;
         }
 
-	
-
-
         //If oxygen or hunger run out, reduce health.
         if (playerCurrentO2 <= float.Epsilon || playerCurrentHunger <= float.Epsilon)
         {
-            playerCurrentHP -= Time.deltaTime;
+            playerCurrentHP -= Time.deltaTime * 2;
             playerHPInt = (int)playerCurrentHP;
         }
+
+        //Increase health if oxygen or hunger is above a value.
+        if(playerCurrentHunger >= 50.0f && playerCurrentO2 >= 25.0f)
+        {
+            playerCurrentHP += Time.deltaTime * 2;
+            playerHPInt = (int)playerCurrentHP;
+        }
+
+        //If power runs out, disable abilities.
+        if(playerCurrentPower <= float.Epsilon)
+        {
+            //PlayerMovInteract.DisableMovementAbilities.
+            //PlayerHUD.Disableflashlight
+            //PlayerHUD.FlickerHUD
+        }
+
+
+
     }
 
 
@@ -115,13 +137,27 @@ public class Player_Needs : MonoBehaviour {
     {
         // Decreasing Hunger/Hydration/O2 overtime set by "time"
         playerCurrentO2 -= Time.deltaTime;
-        playerO2Int = (int)playerCurrentO2;
+        
+        //Only decrease hunger if the player is moving.
+        if (Mathf.Abs( gameObject.GetComponent<Player_Movement>().playerInputH) > 0.0f || Mathf.Abs( gameObject.GetComponent<Player_Movement>().playerInputV) > 0.0f)
+        {
+            playerCurrentHunger -= Time.deltaTime;
+        }
+       
 
-        playerCurrentHunger -= Time.deltaTime;
+        //Only decrease if the HUD is on.
+        //if(Player_HUD.isOn())
+        //{
+            int scale = 1;
+            //Player_HUD.FlashlightIsOn ? scale = 2;
+            playerCurrentPower -= Time.deltaTime * scale;
+        //}
+
+        //Convert to Int values
+        playerO2Int = (int)playerCurrentO2;
         playerHungerInt = (int)playerCurrentHunger;
 
-
-        playerCurrentPower -= Time.deltaTime;
+        
     }
 
 }
