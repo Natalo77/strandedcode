@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PartDropper : MonoBehaviour
 {
+    //public System.Collections.Generic.List<GameObject> list;
     public GameObject[] parts;
-    public System.Collections.Generic.List<GameObject> list;
+
+    //public GameObject extinguisher;
     private int randomIndex;
     private int range;
 
@@ -18,7 +20,27 @@ public class PartDropper : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        list = new System.Collections.Generic.List<GameObject>(parts);
+        if (ext >= 2)
+        {
+            parts[0] = null;
+        }
+        if (hammer >= 2)
+        {
+            parts[1] = null;
+        }
+        if (pipe >= 2)
+        {
+            parts[2] = null;
+        }
+        if (spanner >= 2)
+        {
+            parts[3] = null;
+        }
+        if (spring >= 2)
+        {
+            parts[4] = null;
+        }
+
         // Choose whether the parts will spawn or now | 0 being false and 1 being true
         range = Random.Range(0, 2);
 
@@ -27,24 +49,20 @@ public class PartDropper : MonoBehaviour
         {
             // Choose random prefab from array
             randomIndex = Random.Range(0, parts.Length);
+            Debug.Log("index = " + randomIndex);
 
-            GameObject newPickup = Instantiate(list[randomIndex], gameObject.transform.position, Quaternion.identity);
-            newPickup.transform.parent = gameObject.transform;
-            Debug.Log("Spawning " + list[randomIndex]);
+            if (parts[randomIndex] != null)
+            {
+                GameObject newPickup = Instantiate(parts[randomIndex], gameObject.transform.position, Quaternion.identity);
+                newPickup.transform.parent = gameObject.transform;
+                Debug.Log("Spawning " + newPickup);
+            }
 
             ext = GameObject.FindGameObjectsWithTag("Extinguisher").Length;
             hammer = GameObject.FindGameObjectsWithTag("Hammer").Length;
             pipe = GameObject.FindGameObjectsWithTag("Metal Pipe").Length;
             spanner = GameObject.FindGameObjectsWithTag("Spanner").Length;
             spring = GameObject.FindGameObjectsWithTag("Spring").Length;
-
-            Debug.Log("Ext amount = " + ext);
-            Debug.Log("Hammer amount = " + hammer);
-            Debug.Log("Pipe amount = " + pipe);
-            Debug.Log("Spanner amount = " + spanner);
-            Debug.Log("Spring amount = " + spring);
-
-            Debug.Log(list);
         }
     }
 
@@ -55,10 +73,5 @@ public class PartDropper : MonoBehaviour
         pipe = GameObject.FindGameObjectsWithTag("Metal Pipe").Length;
         spanner = GameObject.FindGameObjectsWithTag("Spanner").Length;
         spring = GameObject.FindGameObjectsWithTag("Spring").Length;
-
-        if(ext >= 2)
-        {
-            Debug.Log("If statement was called");
-        }
     }
 }

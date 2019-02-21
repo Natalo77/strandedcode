@@ -23,7 +23,6 @@ public class PickupDropper : MonoBehaviour {
             // Spawn random pickup prefab from array
             GameObject newPickup = Instantiate(pickups[randomIndex], gameObject.transform.position, Quaternion.identity);
             newPickup.transform.parent = gameObject.transform;
-            Debug.Log("Spawning " + pickups[randomIndex]);
         }
 	}
 }
