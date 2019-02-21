@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player_HUD : MonoBehaviour
+public class Player_HUD_Old : MonoBehaviour
 {
 
     //Text Update stuff for testing purpose on Player HUD

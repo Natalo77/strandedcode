@@ -16,6 +16,8 @@ public class Player_Movement : MonoBehaviour
 
     public float movementSpeed;
 
+    public AudioSource walkSound;
+
     public int scale = 5;
 
     // Use this for initialization
@@ -69,9 +71,22 @@ public class Player_Movement : MonoBehaviour
         }
 
         player_RB.velocity = new Vector3(movementSpeed * playerInputH, 0, movementSpeed * playerInputV);
-        
+
+        //Sound manager
+        if (player_RB.velocity.magnitude > 2f && walkSound.isPlaying == false)
+        {
+            walkSound.volume = Random.Range(0.8f, 1f);
+            walkSound.pitch = Random.Range(0.8f, 1.1f);
+            walkSound.Play();
+        }
+        else if (player_RB.velocity.magnitude < 1)
+        {
+            walkSound.Stop();
+        }
+
+
         //Dash!
-        if(Input.GetButtonDown("Dash") && canUseMovementAbilities)
+        if (Input.GetButtonDown("Dash") && canUseMovementAbilities)
         {
             player_RB.AddForce(new Vector3(movementSpeed * playerInputH * scale, 0, movementSpeed * playerInputV * scale), ForceMode.VelocityChange);
         }

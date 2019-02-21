@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Player_Needs : MonoBehaviour {
+public class Player_Needs_Old : MonoBehaviour {
 
     public static Player_Needs instance = null;
     // Not sure if we need HP for now so I will just comments it out.

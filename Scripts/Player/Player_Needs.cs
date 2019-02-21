@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Player_Needs : MonoBehaviour {
 
+    public static Player_Needs instance = null;
+
     // Not sure if we need HP for now so I will just comments it out.
     private float playerMaxHP = 100;
     public float playerCurrentHP;
@@ -82,10 +84,15 @@ public class Player_Needs : MonoBehaviour {
         //If player have 0 health = dead
         if (playerCurrentHP <= float.Epsilon)
         {
+            //Sound manager
+            SoundManager.instance.PlaySingle(SoundManager.instance.deadSound);
+            SoundManager.instance.musicSource.Stop();
+
             //DEBUG LOGGING
             Debug.Log("PlayerNeeds: Isdead; " + GetComponentInChildren<Animator>().GetBool("isDead"));
             GetComponentInChildren<Animator>().SetTrigger("isDead 0");
 
+            //Death animation
             StartCoroutine(waitfordeath());
         }
 
