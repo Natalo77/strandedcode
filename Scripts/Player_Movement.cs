@@ -6,17 +6,21 @@ public class Player_Movement : MonoBehaviour
 {
     Rigidbody player_RB;
     Animator player_Anim;
+    private Rigidbody player_rb;
 
     private float playerInputH;
     private float playerInputV;
 
     public float movementSpeed;
 
+    public AudioSource walkSound;
+
     // Use this for initialization
     void Start()
     {
         player_RB = GetComponent<Rigidbody>();
         player_Anim = GetComponent<Animator>();
+        player_rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -25,6 +29,18 @@ public class Player_Movement : MonoBehaviour
         playerInputH = Input.GetAxis("Horizontal");
         playerInputV = Input.GetAxis("Vertical");
         player_RB.velocity = new Vector3(movementSpeed * playerInputH, 0, movementSpeed * playerInputV);
+
+        if(player_RB.velocity.magnitude > 2f && walkSound.isPlaying == false)
+        {
+            walkSound.volume = Random.Range(0.8f, 1f);
+            walkSound.pitch = Random.Range(0.8f, 1.1f);
+            walkSound.Play();
+        }
+        else if(player_RB.velocity.magnitude < 1)
+        {
+            walkSound.Stop();
+        }
+        
     }
 
     private void OnTriggerEnter(Collider other)

@@ -11,7 +11,7 @@ public class TargetIndicator : MonoBehaviour
     private Vector3 m_cameraOffsetUp;
     private Vector3 m_cameraOffsetRight;
     private Vector3 m_cameraOffsetForward;
-    public Transform player;
+    private Transform player;
     public Sprite m_targetIconOnScreen;
     public Sprite m_targetIconOffScreen;
     [Space]
@@ -26,23 +26,15 @@ public class TargetIndicator : MonoBehaviour
     //Indicates if the object is out of the screen
     private bool m_outOfScreen;
     private IEnumerator coroutine;
-    //GameObject playeR;
+    private float update;
+
+    GameObject playa;
 
 
     void Start()
     {
-        coroutine = WaitAndPrint(0.1f);
-        StartCoroutine(coroutine);
-        /*mainCamera = Camera.main;
-        Debug.Assert((mainCamera != null), "There needs to be a Camera object in the scene for the OTI to display");
-        mainCanvas = FindObjectOfType<Canvas>();
-        Debug.Assert((mainCanvas != null), "There needs to be a Canvas object in the scene for the OTI to display");
-        InstainateTargetIcon();*/
-    }
-    private IEnumerator WaitAndPrint(float waitTime)
-    {
-        // suspend execution for ? seconds
-        yield return new WaitForSeconds(waitTime);
+        playa = GameObject.FindWithTag("Player");
+        player = playa.gameObject.transform;
         mainCamera = Camera.main;
         Debug.Assert((mainCamera != null), "There needs to be a Camera object in the scene for the OTI to display");
         mainCanvas = FindObjectOfType<Canvas>();
@@ -50,14 +42,12 @@ public class TargetIndicator : MonoBehaviour
         InstainateTargetIcon();
     }
 
-
     void Update()
     {
-        coroutine = WaitAndPrint(0.0f);
-        StartCoroutine(coroutine);
         if (ShowDebugLines)
             DrawDebugLines();
         UpdateTargetIconPosition();
+
         // when player near the target will be disabled and when the player press N it will activate again.
         if (player)
         {
@@ -66,14 +56,18 @@ public class TargetIndicator : MonoBehaviour
             {
                 m_iconImage.gameObject.GetComponent<Image>().enabled = false;
             }
-            else if (Input.GetKeyDown(KeyCode.N)) //for Tutorial purpose
+            else
+            {
+                m_iconImage.gameObject.GetComponent<Image>().enabled = true;
+            }
+            /*else if (Input.GetKeyDown(KeyCode.N)) //for Tutorial purpose
             {
                 m_iconImage.gameObject.GetComponent<Image>().enabled = !m_iconImage.gameObject.GetComponent<Image>().enabled;
             }
             else if (Input.GetKeyDown(KeyCode.M)) //for Tutorial purpose
             {
                 m_iconImage.gameObject.GetComponent<Image>().enabled = false;
-            }
+            }*/
         }
     }
 
@@ -163,5 +157,19 @@ public class TargetIndicator : MonoBehaviour
         // Display the radius when selected
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, m_effectiveDistance);
+    }
+
+    public void SpawnW8Test()
+    {
+        if (GameStateController.Instance.playerSpawned)
+        {
+            //Debug.Log(GameStateController.Instance.playerSpawned);
+            UpdateTargetIconPosition();
+            
+        }
+    }
+    public void ActivateThisObject()
+    {
+        this.gameObject.SetActive(true);
     }
 }

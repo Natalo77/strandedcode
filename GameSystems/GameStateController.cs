@@ -6,9 +6,11 @@ using UnityEngine.SceneManagement;
 public class GameStateController : Singleton<GameStateController> {
 
     private GameObject spawn;
+    public bool playerSpawned;
 
 	// Use this for initialization
 	void Start () {
+        playerSpawned = false;
         Scene scene = SceneManager.GetActiveScene();
         if (scene.buildIndex == 1)
         {
@@ -17,6 +19,7 @@ public class GameStateController : Singleton<GameStateController> {
 
         spawn = GameObject.FindGameObjectWithTag("Spawn");
         TESTFUNCTION_dropPlayer();
+            
         }
 
     }
@@ -38,6 +41,7 @@ public class GameStateController : Singleton<GameStateController> {
     void Update () {
         if (Input.GetKeyDown(KeyCode.G))
         {
+            SoundManager.instance.musicSource.Stop();
             startGame();
         }
         if (Input.GetKeyDown(KeyCode.H))
@@ -75,5 +79,6 @@ public class GameStateController : Singleton<GameStateController> {
     {
         Debug.Log("Spawning Player");
         GameObject.Instantiate(GetComponent<BuildingPrefabWrapper>().player, spawn.transform.position, Quaternion.Euler(0, 0, 0));
+        playerSpawned = true;
     }
 }

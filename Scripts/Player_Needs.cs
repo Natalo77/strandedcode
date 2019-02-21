@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Player_Needs : MonoBehaviour {
 
+    public static Player_Needs instance = null;
     // Not sure if we need HP for now so I will just comments it out.
     private float playerMaxHP = 100;
     public float playerCurrentHP;
@@ -28,7 +29,6 @@ public class Player_Needs : MonoBehaviour {
 
     public bool power, O2, hunger;
 
-
     // Use this for initialization
     void Start () {
         // playerCurrentHP = playerMaxHP;
@@ -44,25 +44,28 @@ public class Player_Needs : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        
         // Call DecreaseNeeds function
         DecreaseNeeds(power, O2, hunger);
+
         //If player have 0 health = dead
         if (playerCurrentHP <= 0)
         {
+            SoundManager.instance.PlaySingle(SoundManager.instance.deadSound);
+            SoundManager.instance.musicSource.Stop();
             GameStateController.Instance.endGame();
         }
-
         playerHPInt = (int)playerCurrentHP;
 
         // Decreasing Hunger/Hydration/O2 overtime set by "time"
         playerCurrentO2 -= Time.deltaTime;
         playerO2Int = (int)playerCurrentO2;
+        playerO2Int = Mathf.Clamp(playerO2Int, 0, 100);
 
         playerCurrentHunger -= Time.deltaTime;
         playerHungerInt = (int)playerCurrentHunger;
+        playerHungerInt = Mathf.Clamp(playerO2Int, 0, 100);
 
-      
         playerCurrentPower -= Time.deltaTime;
 
 
@@ -123,5 +126,5 @@ public class Player_Needs : MonoBehaviour {
 
         playerCurrentPower -= Time.deltaTime;
     }
-
+   
 }
