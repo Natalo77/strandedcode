@@ -16,6 +16,8 @@ public class Player_Movement : MonoBehaviour
 
     public float movementSpeed;
 
+    public int scale = 5;
+
     // Use this for initialization
     void Start()
     {
@@ -29,18 +31,18 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
         //DEBUG LOGGING
-        Debug.Log("PlayerMovement: isMoving: " + GetComponentInChildren<Animator>().GetBool("isMoving"));
+
+        //DEBUG FUNCTION SECTION ===========================
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("Pickup");
+            GetComponentInChildren<Animator>().SetTrigger("Pickup");
+        }
 
         playerInputH = Input.GetAxis("Horizontal");
         playerInputV = Input.GetAxis("Vertical");
 
-        int scale = 1;
-
-        //Dash!
-        if(Input.GetButtonDown("Dash") && canUseMovementAbilities)
-        {
-            scale = 5;
-        }
+        
 
         Vector3 camPos = player_Cam.transform.position;
         if (Mathf.Abs( playerInputH) > 0.0f || Mathf.Abs( playerInputV) > 0.0f)
@@ -66,7 +68,13 @@ public class Player_Movement : MonoBehaviour
             GetComponentInChildren<Animator>().SetBool("isMoving", false);
         }
 
-        player_RB.velocity = new Vector3(movementSpeed * playerInputH * scale, 0, movementSpeed * playerInputV * scale);
+        player_RB.velocity = new Vector3(movementSpeed * playerInputH, 0, movementSpeed * playerInputV);
+        
+        //Dash!
+        if(Input.GetButtonDown("Dash") && canUseMovementAbilities)
+        {
+            player_RB.AddForce(new Vector3(movementSpeed * playerInputH * scale, 0, movementSpeed * playerInputV * scale), ForceMode.VelocityChange);
+        }
 
         player_Cam.transform.rotation = Quaternion.Euler(90, 0, 0);
     }

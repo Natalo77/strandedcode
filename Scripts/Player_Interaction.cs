@@ -25,6 +25,14 @@ public class Player_Interaction : MonoBehaviour {
         pickupSpring = uiController.pickupSpring;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            GetComponentInChildren<Animator>().SetTrigger("Repair");
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         // Disable top mesh if player enters the ship or a building

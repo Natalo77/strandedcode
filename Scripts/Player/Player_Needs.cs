@@ -45,6 +45,8 @@ public class Player_Needs : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        
+
         //TESTFUNCTION
         if(Input.GetKeyDown(KeyCode.P))
         {
@@ -69,14 +71,22 @@ public class Player_Needs : MonoBehaviour {
         {
             playerCurrentO2 = 1.0f;
         }
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            playerCurrentHP = 0.0f;
+        }
         
 
         // Call DecreaseNeeds function
         DecreaseNeeds(power, O2, hunger);
         //If player have 0 health = dead
-        if (playerCurrentHP <= 0)
+        if (playerCurrentHP <= float.Epsilon)
         {
-            GameStateController.Instance.endGame();
+            //DEBUG LOGGING
+            Debug.Log("PlayerNeeds: Isdead; " + GetComponentInChildren<Animator>().GetBool("isDead"));
+            GetComponentInChildren<Animator>().SetTrigger("isDead 0");
+
+            StartCoroutine(waitfordeath());
         }
 
         playerHPInt = (int)playerCurrentHP;
@@ -173,6 +183,12 @@ public class Player_Needs : MonoBehaviour {
 
         playerHPInt = (int)playerCurrentHP;
         
+    }
+
+    public IEnumerator waitfordeath()
+    {
+        yield return new WaitForSecondsRealtime(2);
+        GameStateController.Instance.endGame();
     }
 
 
