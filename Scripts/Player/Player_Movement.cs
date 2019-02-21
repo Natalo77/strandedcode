@@ -66,52 +66,9 @@ public class Player_Movement : MonoBehaviour
             GetComponentInChildren<Animator>().SetBool("isMoving", false);
         }
 
-        
-        
-
-
         player_RB.velocity = new Vector3(movementSpeed * playerInputH * scale, 0, movementSpeed * playerInputV * scale);
 
         player_Cam.transform.rotation = Quaternion.Euler(90, 0, 0);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Ship" || other.gameObject.tag == "Building")
-        {
-            other.GetComponent<MeshRenderer>().enabled = false;
-        }
-
-        if (other.gameObject.tag == "Food")
-        {
-            gameObject.GetComponent<Player_Needs>().playerCurrentHunger += 25.0f;
-        }
-
-        if (other.gameObject.tag == "PowerCell")
-        {
-            gameObject.GetComponent<Player_Needs>().playerCurrentPower += 25.0f;
-        }
-
-        if (other.gameObject.tag == "OxygenTank")
-        {
-            gameObject.GetComponent<Player_Needs>().playerCurrentO2 += 25.0f;
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag == "ShipOxygen")
-        {
-            gameObject.GetComponent<Player_Needs>().playerCurrentO2 += Time.deltaTime * 5;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Ship" || other.gameObject.tag == "Building")
-        {
-            other.GetComponent<MeshRenderer>().enabled = true;
-        }
     }
 
     public void setCanUseMovementAbilities(bool canUse)
