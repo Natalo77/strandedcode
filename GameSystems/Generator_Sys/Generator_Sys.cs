@@ -582,7 +582,7 @@ public class Generator_Sys : MonoBehaviour  {
                 if(block[y, x] == BlockContent.Building && block[y, x + 2] == BlockContent.Building)
                 {
                     //Do I want to put a 2x1 across here?
-                    if(rand.Next(0, 10) == 9)
+                    if(rand.Next(0, 2) == 1)
                     {
                         //Put a 2x1 across here.
                         block[y, x] = BlockContent.B2x1E;
@@ -618,7 +618,7 @@ public class Generator_Sys : MonoBehaviour  {
                 if (block[y, x] == BlockContent.Building && block[y + 2, x] == BlockContent.Building)
                 {
                     //Do I want to put a 2x1 down here?
-                    if (rand.Next(0, 10) == 9)
+                    if (rand.Next(0, 2) == 1)
                     {
                         //Put a 2x1 across here.
                         block[y, x] = BlockContent.B2x1S;
@@ -641,7 +641,7 @@ public class Generator_Sys : MonoBehaviour  {
                 if(block[y,x] == BlockContent.Building && block[y+2,x] == BlockContent.Building && block[y,x+2] == BlockContent.Building && block[y+2,x+2] == BlockContent.Building)
                 {
                     //Do I want to put a 2x2 down here?
-                    if(rand.Next(0, 20) == 5)
+                    if(rand.Next(0, 5) == 1)
                     {
                         //Put a 2x2 here.
                         block[y, x] = BlockContent.B2x2;
@@ -681,7 +681,7 @@ public class Generator_Sys : MonoBehaviour  {
                 if(block[y,x] == BlockContent.Building && block[y+2, x] == BlockContent.Building && block[y,x-2] == BlockContent.Building)
                 {
                     //Do I want to put a ¬ here?
-                    if(rand.Next(0, 10) == 5)
+                    if(rand.Next(0, 5) == 2)
                     {
                         //Put a ¬ here
                         block[y, x] = BlockContent.BDL;
@@ -718,7 +718,7 @@ public class Generator_Sys : MonoBehaviour  {
                 if (block[y, x] == BlockContent.Building && block[y + 2, x] == BlockContent.Building && block[y, x + 2] == BlockContent.Building)
                 {
                     //Do I want to put a |- here?
-                    if (rand.Next(0, 10) == 5)
+                    if (rand.Next(0, 5) == 2)
                     {
                         //Put a ¬ here
                         block[y, x] = BlockContent.BDR;
@@ -755,7 +755,7 @@ public class Generator_Sys : MonoBehaviour  {
                 if (block[y, x] == BlockContent.Building && block[y - 2, x] == BlockContent.Building && block[y, x + 2] == BlockContent.Building)
                 {
                     //Do I want to put a |_ here?
-                    if (rand.Next(0, 10) == 5)
+                    if (rand.Next(0, 5) == 2)
                     {
                         //Put a ¬ here
                         block[y, x] = BlockContent.BUR;
@@ -792,7 +792,7 @@ public class Generator_Sys : MonoBehaviour  {
                 if (block[y, x] == BlockContent.Building && block[y - 2, x] == BlockContent.Building && block[y, x - 2] == BlockContent.Building)
                 {
                     //Do I want to put a _| here?
-                    if (rand.Next(0, 10) == 5)
+                    if (rand.Next(0, 5) == 2)
                     {
                         //Put a ¬ here
                         block[y, x] = BlockContent.BUL;

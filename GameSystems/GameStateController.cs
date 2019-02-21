@@ -74,6 +74,8 @@ public class GameStateController : Singleton<GameStateController> {
     public void TESTFUNCTION_dropPlayer()
     {
         Debug.Log("Spawning Player");
-        GameObject.Instantiate(GetComponent<BuildingPrefabWrapper>().player, spawn.transform.position, Quaternion.Euler(0, 0, 0));
+        GameObject player = GetComponent<BuildingPrefabWrapper>().player;
+        GameObject.Instantiate(player, spawn.transform.position, Quaternion.Euler(0, 0, 0));
+        //player.transform.rotation = Quaternion.Euler(-90, 0, 0);
     }
 }
