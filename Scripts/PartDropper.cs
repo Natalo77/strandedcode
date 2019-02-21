@@ -4,39 +4,48 @@ using UnityEngine;
 
 public class PartDropper : MonoBehaviour
 {
-    //public System.Collections.Generic.List<GameObject> list;
+    // Array of parts
     public GameObject[] parts;
 
-    //public GameObject extinguisher;
     private int randomIndex;
     private int range;
-
-    public int ext;
-    public int hammer;
-    public int pipe;
-    public int spanner;
-    public int spring;
+    public int maxObjects;
+    
+    // Values to check amount of spawned parts
+    private int ext;
+    private int hammer;
+    private int pipe;
+    private int spanner;
+    private int spring;
 
     // Use this for initialization
     void Start()
     {
-        if (ext >= 2)
+        // Check amount of parts currently placed in the scene
+        ext = GameObject.FindGameObjectsWithTag("Extinguisher").Length;
+        hammer = GameObject.FindGameObjectsWithTag("Hammer").Length;
+        pipe = GameObject.FindGameObjectsWithTag("Metal Pipe").Length;
+        spanner = GameObject.FindGameObjectsWithTag("Spanner").Length;
+        spring = GameObject.FindGameObjectsWithTag("Spring").Length;
+
+        // If 2 or more parts have spawned then replace the part prefab with null in the array
+        if (ext >= maxObjects)
         {
             parts[0] = null;
         }
-        if (hammer >= 2)
+        if (hammer >= maxObjects)
         {
             parts[1] = null;
         }
-        if (pipe >= 2)
+        if (pipe >= maxObjects)
         {
             parts[2] = null;
         }
-        if (spanner >= 2)
+        if (spanner >= maxObjects)
         {
             parts[3] = null;
         }
-        if (spring >= 2)
+        if (spring >= maxObjects)
         {
             parts[4] = null;
         }
@@ -49,29 +58,21 @@ public class PartDropper : MonoBehaviour
         {
             // Choose random prefab from array
             randomIndex = Random.Range(0, parts.Length);
-            Debug.Log("index = " + randomIndex);
 
+            // If that part is still available to be placed
             if (parts[randomIndex] != null)
             {
+                // Spawn the part
                 GameObject newPickup = Instantiate(parts[randomIndex], gameObject.transform.position, Quaternion.identity);
                 newPickup.transform.parent = gameObject.transform;
-                Debug.Log("Spawning " + newPickup);
+
+                // Re-evalulate the amount of spawned parts
+                ext = GameObject.FindGameObjectsWithTag("Extinguisher").Length;
+                hammer = GameObject.FindGameObjectsWithTag("Hammer").Length;
+                pipe = GameObject.FindGameObjectsWithTag("Metal Pipe").Length;
+                spanner = GameObject.FindGameObjectsWithTag("Spanner").Length;
+                spring = GameObject.FindGameObjectsWithTag("Spring").Length;
             }
-
-            ext = GameObject.FindGameObjectsWithTag("Extinguisher").Length;
-            hammer = GameObject.FindGameObjectsWithTag("Hammer").Length;
-            pipe = GameObject.FindGameObjectsWithTag("Metal Pipe").Length;
-            spanner = GameObject.FindGameObjectsWithTag("Spanner").Length;
-            spring = GameObject.FindGameObjectsWithTag("Spring").Length;
         }
-    }
-
-    private void Update()
-    {
-        ext = GameObject.FindGameObjectsWithTag("Extinguisher").Length;
-        hammer = GameObject.FindGameObjectsWithTag("Hammer").Length;
-        pipe = GameObject.FindGameObjectsWithTag("Metal Pipe").Length;
-        spanner = GameObject.FindGameObjectsWithTag("Spanner").Length;
-        spring = GameObject.FindGameObjectsWithTag("Spring").Length;
     }
 }

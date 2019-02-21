@@ -26,44 +26,4 @@ public class Player_Movement : MonoBehaviour
         playerInputV = Input.GetAxis("Vertical");
         player_RB.velocity = new Vector3(movementSpeed * playerInputH, 0, movementSpeed * playerInputV);
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Ship" || other.gameObject.tag == "Building")
-        {
-            other.GetComponent<MeshRenderer>().enabled = false;
-        }
-
-        if (other.gameObject.tag == "Food")
-        {
-            gameObject.GetComponent<Player_Needs>().playerCurrentHunger += 25.0f;
-        }
-
-        if (other.gameObject.tag == "PowerCell")
-        {
-            gameObject.GetComponent<Player_Needs>().playerCurrentPower += 25.0f;
-        }
-
-        if (other.gameObject.tag == "OxygenTank")
-        {
-            gameObject.GetComponent<Player_Needs>().playerCurrentO2 += 25.0f;
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag == "ShipOxygen")
-        {
-            gameObject.GetComponent<Player_Needs>().playerCurrentO2 += Time.deltaTime * 5;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Ship" || other.gameObject.tag == "Building")
-        {
-            other.GetComponent<MeshRenderer>().enabled = true;
-        }
-    }
-
 }
