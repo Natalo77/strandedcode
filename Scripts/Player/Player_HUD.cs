@@ -9,7 +9,11 @@ public class Player_HUD : MonoBehaviour {
     public Text textUpdateHP;
     public Text textUpdateO2;
     public Text textUpdateHunger;
-    
+    private Canvas mainCanvas;
+    private Transform canvasChild;
+
+    private bool toggleBool;
+
     Player_Needs pNeeds; // will be needed to call some variable from Player_Needs
 
     private bool flashLightCanBeOn;
@@ -22,6 +26,7 @@ public class Player_HUD : MonoBehaviour {
     private void Start() 
     {
         pNeeds = GetComponent<Player_Needs>();
+        canvasChild = transform.Find("Canvas");
         hudFlicker = GetComponent<HUD_Flicker>();
         flashLightCanBeOn = true;
         flashLightOn = false;
@@ -40,7 +45,9 @@ public class Player_HUD : MonoBehaviour {
             {
                 if (Input.GetKeyDown(KeyCode.Tab))
                 {
-                    gameObject.GetComponent<Canvas>().enabled = !gameObject.GetComponent<Canvas>().enabled;
+                    canvasChild.gameObject.GetComponent<Canvas>().enabled = !canvasChild.gameObject.GetComponent<Canvas>().enabled;
+                    SoundManager.instance.PlaySingle(SoundManager.instance.hudSound);
+                    Debug.Log("Canvas toggle activated");
                 }
             }
         }
@@ -61,6 +68,15 @@ public class Player_HUD : MonoBehaviour {
         textUpdateO2.text = "O2: " + pNeeds.playerO2Int;
         textUpdateHunger.text = "Hunger: " + pNeeds.playerHungerInt;
         textUpdateHP.text = "HP: " + pNeeds.playerHPInt;
+    }
+
+    public void CanvasKun()
+    {
+        if (GameStateController.Instance.playerSpawned == true)
+        {
+            Debug.Log(GameStateController.Instance.playerSpawned);
+            canvasChild.transform.SetParent(mainCanvas.transform);
+        }
     }
 
     public void DisableFlashlight()

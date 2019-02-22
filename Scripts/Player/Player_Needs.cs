@@ -8,6 +8,11 @@ public class Player_Needs : MonoBehaviour {
     [HideInInspector]
     public float playerMaxHP = 100;
     [HideInInspector]
+
+    public static Player_Needs instance = null;
+
+    // Not sure if we need HP for now so I will just comments it out.
+    private float playerMaxHP = 100;
     public float playerCurrentHP;
     public int playerHPInt; //conver float to int. | to display as whole number
 
@@ -79,11 +84,24 @@ public class Player_Needs : MonoBehaviour {
         {
             playerCurrentO2 = 1.0f;
         }
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            playerCurrentHP = 0.0f;
+        }
 
         //If player have 0 health = dead
-        if (playerCurrentHP <= 0)
+        if (playerCurrentHP <= float.Epsilon)
         {
-            GameStateController.Instance.endGame();
+            //Sound manager
+            SoundManager.instance.PlaySingle(SoundManager.instance.deadSound);
+            SoundManager.instance.musicSource.Stop();
+
+            //DEBUG LOGGING
+            Debug.Log("PlayerNeeds: Isdead; " + GetComponentInChildren<Animator>().GetBool("isDead"));
+            GetComponentInChildren<Animator>().SetTrigger("isDead 0");
+
+            //Death animation
+            StartCoroutine(waitfordeath());
         }
         
         //UpdateText();
@@ -154,6 +172,12 @@ public class Player_Needs : MonoBehaviour {
         }
 
         playerHPInt = (int)playerCurrentHP;
+    }
+
+    public IEnumerator waitfordeath()
+    {
+        yield return new WaitForSecondsRealtime(2);
+        GameStateController.Instance.endGame();
     }
 
 

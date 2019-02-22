@@ -19,6 +19,7 @@ public class GameStateController : Singleton<GameStateController> {
 
         spawn = GameObject.FindGameObjectWithTag("Spawn");
         TESTFUNCTION_dropPlayer();
+            
         }
 
     }
@@ -40,6 +41,7 @@ public class GameStateController : Singleton<GameStateController> {
     void Update () {
         if (Input.GetKeyDown(KeyCode.G))
         {
+            SoundManager.instance.musicSource.Stop();
             startGame();
         }
         if (Input.GetKeyDown(KeyCode.H))
