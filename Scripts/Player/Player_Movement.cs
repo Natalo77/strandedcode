@@ -29,7 +29,7 @@ public class Player_Movement : MonoBehaviour
     void Update()
     {
         //DEBUG LOGGING
-        Debug.Log("PlayerMovement: isMoving: " + GetComponentInChildren<Animator>().GetBool("isMoving"));
+        //Debug.Log("PlayerMovement: isMoving: " + GetComponentInChildren<Animator>().GetBool("isMoving"));
 
         playerInputH = Input.GetAxis("Horizontal");
         playerInputV = Input.GetAxis("Vertical");

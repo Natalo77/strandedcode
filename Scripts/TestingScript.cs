@@ -29,12 +29,15 @@ public class TestingScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        currentCoroutine = StartCoroutine(SpawnCoroutine());
-        StartCoroutine(StopAfter(3.0f));
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Daylight_Cycle test = GameObject.Find("Sun").GetComponent<Daylight_Cycle>();
+            Debug.Log(test.worldTimeInSeconds);
+        }
 	}
 }

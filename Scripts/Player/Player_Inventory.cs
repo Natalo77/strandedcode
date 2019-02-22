@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player_Inventory : MonoBehaviour {
 
-    public enum Pickups { Food, Oxygen, Water};
+    public enum Pickups { Food, Oxygen, Power};
     public enum ShipPart { Extinguisher, Hammer, Pipe, Spanner, Spring};
 
     //Food, Oxygen, Power.
@@ -20,7 +20,7 @@ public class Player_Inventory : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
     public bool getHasPickup(Pickups pickupType)
@@ -48,7 +48,6 @@ public class Player_Inventory : MonoBehaviour {
         if(pickups[(int)pickupType] >= 1)
         {
             pickups[(int)pickupType]--;
-            //Player_Needs.UsePickup(pickupType);
         }
     }
 
@@ -60,5 +59,13 @@ public class Player_Inventory : MonoBehaviour {
         }
     }
 
+    public int getPickupAmount(Pickups pickupType)
+    {
+        return pickups[(int)pickupType];
+    }
 
+    public int getShipPartAmount(ShipPart shipPartType)
+    {
+        return shipParts[(int)shipPartType];
+    }
 }

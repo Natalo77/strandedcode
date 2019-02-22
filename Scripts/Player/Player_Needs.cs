@@ -5,19 +5,25 @@ using UnityEngine.UI;
 
 public class Player_Needs : MonoBehaviour {
 
-    // Not sure if we need HP for now so I will just comments it out.
-    private float playerMaxHP = 100;
+    [HideInInspector]
+    public float playerMaxHP = 100;
+    [HideInInspector]
     public float playerCurrentHP;
     public int playerHPInt; //conver float to int. | to display as whole number
 
-    private float playerMaxPower = 100;
+    [HideInInspector]
+    public float playerMaxPower = 100;
     public float playerCurrentPower;
-    
-    private float playerMaxO2 = 100;
+
+    [HideInInspector]
+    public float playerMaxO2 = 100;
+    [HideInInspector]
     public float playerCurrentO2;
     public int playerO2Int; //convert float to int. | to display as whole number
 
-    private float playerMaxHunger = 100;
+    [HideInInspector]
+    public float playerMaxHunger = 100;
+    [HideInInspector]
     public float playerCurrentHunger;
     public int playerHungerInt; //convert float to int. | to display as whole number
 
@@ -40,13 +46,17 @@ public class Player_Needs : MonoBehaviour {
         power = true;
         O2 = true;
         hunger = true;
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
 
+        playerHPInt = (int)playerCurrentHP;
+        // Call DecreaseNeeds function
+        DecreaseNeeds(power, O2, hunger);
+
         //TESTFUNCTION
-        if(Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             if (playerCurrentPower > 25.0f)
             {
@@ -63,47 +73,20 @@ public class Player_Needs : MonoBehaviour {
         }
         if(Input.GetKeyDown(KeyCode.O))
         {
-            playerCurrentPower = 100.0f;
+            playerCurrentPower = 25.0f;
         }
         if(Input.GetKeyDown(KeyCode.Y))
         {
             playerCurrentO2 = 1.0f;
         }
-        
 
-        // Call DecreaseNeeds function
-        DecreaseNeeds(power, O2, hunger);
         //If player have 0 health = dead
         if (playerCurrentHP <= 0)
         {
             GameStateController.Instance.endGame();
         }
-
-        playerHPInt = (int)playerCurrentHP;
-
-
-
-
-        if (playerCurrentHP > 100.0f)
-        {
-            playerCurrentHP = playerMaxHP;
-        }
-        if (playerCurrentHunger > 100.0f)
-        {
-            playerCurrentHunger = playerMaxHunger;
-        }
-        if (playerCurrentO2 > 100.0f)
-        {
-            playerCurrentO2 = playerMaxO2;
-        }
-        if (playerCurrentPower > 100.0f)
-        {
-            playerCurrentPower = playerMaxPower;
-        }
         
-
         //UpdateText();
-
 
         //Reduce movement speed if any need is below 25.
         
@@ -120,7 +103,6 @@ public class Player_Needs : MonoBehaviour {
         if (playerCurrentO2 <= float.Epsilon || playerCurrentHunger <= float.Epsilon)
         {
             playerCurrentHP -= Time.deltaTime;
-            
         }
         
 
@@ -172,13 +154,12 @@ public class Player_Needs : MonoBehaviour {
         }
 
         playerHPInt = (int)playerCurrentHP;
-        
     }
 
 
     public void DecreaseNeeds(bool power, bool O2, bool hunger)
     {
-        // Decreasing Hunger/Hydration/O2 overtime set by "time"
+        // Decreasing Hunger/Power/O2 overtime set by "time"
         playerCurrentO2 -= Time.deltaTime;
         
 
@@ -202,5 +183,4 @@ public class Player_Needs : MonoBehaviour {
             playerCurrentPower -= Time.deltaTime * scale;
         }
     }
-
 }
